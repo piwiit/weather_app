@@ -5,18 +5,16 @@ from os import getenv
 load_dotenv()
 
 
-def get_goe_city(city):
-    url = f'http://api.openweathermap.org/geo/1.0/direct?q={
-        city}&limit=5&appid={getenv("WEATHER_APP_KEY")}'
+def get_geo_city(city):
+    url = f'http://api.openweathermap.org/geo/1.0/direct?q={city}&limit=5&appid={getenv("WEATHER_APP_KEY")}'
     result = get(url).json()
-    lat = result[1]["lat"]
-    lon = result[1]["lon"]
+    lat = result[0]["lat"]
+    lon = result[0]["lon"]
     return lat, lon
 
 
 def weather_city(city_geo):
-    url = f'https://api.openweathermap.org/data/2.5/weather?lat={
-        city_geo[0]}&lon={city_geo[1]}&appid={getenv("WEATHER_APP_KEY")}'
+    url = f'https://api.openweathermap.org/data/2.5/weather?lat={city_geo[0]}&lon={city_geo[1]}&appid={getenv("WEATHER_APP_KEY")}'
     result = get(url).json()
     return result["weather"], result['main']
 
@@ -28,14 +26,17 @@ def convert_kelvin_to_celsius(temp):
 user_search1 = "La Rochelle"
 user_search2 = "Dunkerque"
 
-geo1 = get_goe_city(user_search1)
-geo2 = get_goe_city(user_search2)
+geo1 = get_geo_city(user_search1)
+geo2 = get_geo_city(user_search2)
 data_la_rochelle = weather_city(geo1)
-data_Dunkerque = weather_city(geo2)
+data_dunkerque = weather_city(geo2)
 
 temp1 = convert_kelvin_to_celsius(data_la_rochelle[1]['temp_max'])
-temp2 = convert_kelvin_to_celsius(data_Dunkerque[1]['temp_max'])
-print("La Rochelle => ", temp1, 'C° et le ciel est ',
-      data_la_rochelle[0][0]['main'])
-print("Dunkerque => ", temp2, 'C° et le ciel est ',
-      data_Dunkerque[0][0]['main'])
+temp2 = convert_kelvin_to_celsius(data_dunkerque[1]['temp_max'])
+
+
+def show_weather(temp_lr, temp_dun, data_lr, data_dun):
+    return temp_lr, temp_dun, data_lr[0][0]['main'], data_dun[0][0]['main']
+
+
+print(show_weather())
