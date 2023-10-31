@@ -18,7 +18,11 @@ def weather_city(city_geo):
     url = f'https://api.openweathermap.org/data/2.5/weather?lat={
         city_geo[0]}&lon={city_geo[1]}&appid={getenv("WEATHER_APP_KEY")}'
     result = get(url).json()
-    return result["weather"]
+    return result["weather"], result['main']
+
+
+def convert_kelvin_to_celsius(temp):
+    return (temp - 273, 15)
 
 
 user_search1 = "La Rochelle"
