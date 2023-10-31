@@ -22,15 +22,20 @@ def weather_city(city_geo):
 
 
 def convert_kelvin_to_celsius(temp):
-    return (temp - 273, 15)
+    return round(temp - 273.15)
 
 
 user_search1 = "La Rochelle"
 user_search2 = "Dunkerque"
 
-print(get_goe_city(user_search1))
-
 geo1 = get_goe_city(user_search1)
 geo2 = get_goe_city(user_search2)
-print("La Rochelle => ", weather_city(geo1))
-print("Dunkerque => ", weather_city(geo2))
+data_la_rochelle = weather_city(geo1)
+data_Dunkerque = weather_city(geo2)
+
+temp1 = convert_kelvin_to_celsius(data_la_rochelle[1]['temp_max'])
+temp2 = convert_kelvin_to_celsius(data_Dunkerque[1]['temp_max'])
+print("La Rochelle => ", temp1, 'C° et le ciel est ',
+      data_la_rochelle[0][0]['main'])
+print("Dunkerque => ", temp2, 'C° et le ciel est ',
+      data_Dunkerque[0][0]['main'])
